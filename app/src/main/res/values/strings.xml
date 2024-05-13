@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Puzzle</string>
+    <string name="description">Assemblez les pièces pour constituer le puzzle</string>
+</resources>
