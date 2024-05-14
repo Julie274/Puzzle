@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Puzzle</string>
     <string name="description">Assemblez les pièces pour constituer le puzzle</string>
+    <string name="congratulation">Félicitation, vous avez gagné !</string>
 </resources>
