@@ -7,28 +7,43 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.puzzle.model.entity.PuzzlePiece
 import kotlin.math.roundToInt
 
 @Composable
 fun PiecesView(
-    puzzlePieces : List<PuzzlePiece>,
+    puzzlePieces : MutableList<PuzzlePiece>,
     offsetX : SnapshotStateList<Float>,
     offsetY : SnapshotStateList<Float>,
-    puzzleViewModel: PuzzleViewModel = hiltViewModel(),
-    isGameOver : MutableState<Boolean>
+    isGameOver : MutableState<Boolean>,
+    puzzleViewModel: PuzzleViewModel = hiltViewModel()
 ){
+    var selectedPieceIndex by remember { mutableIntStateOf(-1) }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        puzzlePieces.forEach { puzzlePiece ->
+        puzzlePieces.forEachIndexed { index, puzzlePiece ->
+
+            var zIndex = index.toFloat()
+            if(!puzzlePiece.canMove){
+                zIndex = 0f
+            } else if(index == selectedPieceIndex){
+                zIndex = Float.MAX_VALUE
+            }
+
             Image(
                 bitmap = puzzlePiece.image.asImageBitmap(),
                 contentDescription = "",
@@ -39,8 +54,12 @@ fun PiecesView(
                             offsetY[puzzlePiece.id].roundToInt()
                         )
                     }
+                    .zIndex(zIndex)
                     .pointerInput(Unit) {
                         detectDragGestures(
+                            onDragStart = {
+                                selectedPieceIndex = index
+                            },
                             onDragEnd = {
                                 if (puzzleViewModel.isNearGoal(
                                         xCoord = offsetX[puzzlePiece.id],

@@ -4,23 +4,9 @@ import android.graphics.Bitmap
 import android.graphics.Paint
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
-import android.health.connect.datatypes.HeightRecord
-import android.icu.text.ListFormatter.Width
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.asAndroidBitmap
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.lifecycle.ViewModel
 import com.example.puzzle.model.entity.Puzzle
 import com.example.puzzle.model.entity.PuzzlePiece
@@ -36,13 +22,13 @@ class PuzzleViewModel @Inject constructor(): ViewModel() {
 
     fun splitImage(
         puzzle: Puzzle,
-        bitmapPiece: ImageBitmap,
+        bitmap: ImageBitmap,
         imagePosition: Offset
-    ) : List<PuzzlePiece> {
+    ) : MutableList<PuzzlePiece> {
         val rows = puzzle.rows
         val columns = puzzle.columns
-        val pieceWidth = bitmapPiece.width/columns
-        val pieceHeight = bitmapPiece.height/rows
+        val pieceWidth = bitmap.width/columns
+        val pieceHeight = bitmap.height/rows
         val bumpSize = pieceHeight / 4
         val puzzlePieces : MutableList<PuzzlePiece> = mutableListOf()
 
@@ -62,7 +48,7 @@ class PuzzleViewModel @Inject constructor(): ViewModel() {
                 }
 
                 val pieceBitmap = Bitmap.createBitmap(
-                    bitmapPiece.asAndroidBitmap(),
+                    bitmap.asAndroidBitmap(),
                     xCoord - offsetX,
                     yCoord - offsetY,
                     pieceWidth + offsetX,

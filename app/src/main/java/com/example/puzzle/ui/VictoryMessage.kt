@@ -48,7 +48,10 @@ fun VictoryMessage(
                 Button(
                     onClick = { onClick() }
                 ) {
-                    Text(text = "Ouvrir : $successContent")
+
+                    Text(
+                        text = stringResource(R.string.ouvrir, successContent)
+                    )
                 }
             }
         }

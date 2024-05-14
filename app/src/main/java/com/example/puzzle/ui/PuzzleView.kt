@@ -18,7 +18,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,7 +50,7 @@ fun PuzzleView(
     navController: NavController,
     puzzleViewModel: PuzzleViewModel = hiltViewModel()
 ){
-    var puzzlePieces : List<PuzzlePiece> = mutableListOf()
+    var puzzlePieces : MutableList<PuzzlePiece> = mutableListOf()
 
     val isGameOver = remember {
         mutableStateOf(value = false)
@@ -172,8 +171,8 @@ fun PuzzleView(
                                 puzzlePieces = puzzlePieces,
                                 offsetX = offsetX,
                                 offsetY = offsetY,
-                                puzzleViewModel = puzzleViewModel,
-                                isGameOver = isGameOver
+                                isGameOver = isGameOver,
+                                puzzleViewModel = puzzleViewModel
                             )
                         }
                     }
